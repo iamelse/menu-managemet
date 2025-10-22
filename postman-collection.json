@@ -1,0 +1,65 @@
+{
+  "info": {
+    "_postman_id": "0f7a2e2b-61df-4df8-9e70-c5a9324c102b",
+    "name": "Menu Tree API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Menu Tree",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/menus"
+      }
+    },
+    {
+      "name": "Create Menu",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"New Menu\",\n  \"code\": \"NEW_MENU\",\n  \"parent_id\": null,\n  \"order\": 0\n}"
+        },
+        "url": "{{base_url}}/menus"
+      }
+    },
+    {
+      "name": "Update Menu",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated Menu\",\n  \"code\": \"UPDATED_MENU\"\n}"
+        },
+        "url": "{{base_url}}/menus/{{menu_id}}"
+      }
+    },
+    {
+      "name": "Delete Menu",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{base_url}}/menus/{{menu_id}}"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api"
+    }
+  ]
+}
