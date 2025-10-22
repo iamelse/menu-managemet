@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MenuRequest;
+use App\Http\Resources\MenuResource;
 use App\Services\MenuService;
-use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
@@ -14,31 +15,20 @@ class MenuController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->getTree());
+        $menus = $this->service->getTree();
+        return MenuResource::collection($menus);
     }
 
-    public function store(Request $request)
+    public function store(MenuRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'nullable|string|max:255|unique:menus,code',
-            'parent_id' => 'nullable|uuid|exists:menus,id',
-            'order' => 'nullable|integer|min:0',
-        ]);
-
-        return response()->json($this->service->create($data), 201);
+        $menu = $this->service->create($request->validated());
+        return new MenuResource($menu->load('children'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(MenuRequest $request, string $id)
     {
-        $data = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'code' => 'nullable|string|max:255|unique:menus,code,' . $id,
-            'parent_id' => 'nullable|uuid|exists:menus,id',
-            'order' => 'nullable|integer|min:0',
-        ]);
-
-        return response()->json($this->service->update($id, $data));
+        $menu = $this->service->update($id, $request->validated());
+        return new MenuResource($menu->load('children'));
     }
 
     public function destroy(string $id)
